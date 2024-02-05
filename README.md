@@ -17,31 +17,32 @@ To use this application, you need to have Python installed on your system. Follo
 
 1. Clone this repository to your local machine:
 
-   ```bash
-   git clone https://github.com/your_username/weather-forecast-app.git
-   ```
+```bash
+git clone https://github.com/your_username/weather-forecast-app.git
+```
 
 2. Install the required dependencies:
 
 
-   ```bash
-    pip install requests
-   ```
+```bash
+ pip install requests
+```
 
 3. Replace "YOUR_API_KEY_HERE" in the code with your actual OpenWeatherMap API key.
 
 Run the weather_forecast.py file:
 
  ```bash
-    python weather_forecast.py
+ python weather_forecast.py
  ```
 
 Enter the city name and click the "Update Weather" button to fetch the weather forecast.
 
 ## Dependencies
 
-    Python 3.x
-    requests
+Python 3.x
+
+requests
 
 ## Contributing
 
