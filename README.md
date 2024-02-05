@@ -30,10 +30,10 @@ git clone https://github.com/your_username/weather-forecast-app.git
 
 3. Replace "YOUR_API_KEY_HERE" in the code with your actual OpenWeatherMap API key.
 
-Run the weather_forecast.py file:
+Run the .py file:
 
  ```bash
- python weather_forecast.py
+ python bob_pitools.py
  ```
 
 Enter the city name and click the "Update Weather" button to fetch the weather forecast.
