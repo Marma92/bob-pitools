@@ -25,7 +25,7 @@ git clone https://github.com/your_username/weather-forecast-app.git
 
 
 ```bash
- pip install requests
+ pip install requests tkinter
 ```
 
 3. Replace "YOUR_API_KEY_HERE" in the code with your actual OpenWeatherMap API key.
