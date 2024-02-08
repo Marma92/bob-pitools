@@ -141,7 +141,7 @@ hide_pointer()
 
 #weather
 weather_frame = tk.Frame(root)
-weather_frame.grid(row=0, column=0, padx=10, pady=10)
+weather_frame.grid(row=0, column=0, padx=5, pady=5)
 
 # Create and place widgets in the weather frame
 city_label = tk.Label(weather_frame, text="", font=("Arial", 20))  # Set font size to 20
@@ -155,30 +155,30 @@ temperature_label.grid(row=2, column=0)
 
 # Create and configure system info frame
 system_info_frame = tk.Frame(root)
-system_info_frame.grid(row=0, column=2, padx=10, pady=10)
+system_info_frame.grid(row=0, column=2, padx=5, pady=5)
 
 # Create and place labels for system information
 cpu_load_label = tk.Label(system_info_frame, text="")
-cpu_load_label.grid(row=0, column=0)
+cpu_load_label.grid(sticky="W", row=0, column=0)
 
 
 ram_load_label = tk.Label(system_info_frame, text="")
-ram_load_label.grid(row=1, column=0)
+ram_load_label.grid(sticky="W", row=1, column=0)
 
 
 cpu_temp_label = tk.Label(system_info_frame, text="")
-cpu_temp_label.grid(row=2, column=0)
+cpu_temp_label.grid(sticky="W", row=2, column=0)
 
 # Create and place French date frame in the center of the window
 french_date_frame = tk.Frame(root)
-french_date_frame.grid(row=1, column=1, padx=10, pady=10)
+french_date_frame.grid(row=1, column=1, pady=10)
 french_date_frame.lift()
 
 # Create and place label for French date in the center of the window
-french_date_label = tk.Label(french_date_frame, text="", font=("Arial", 15))
+french_date_label = tk.Label(french_date_frame, text="", font=("Arial", 20))
 french_date_label.grid(row=0, column=0)
 
-time_label = tk.Label(french_date_frame, text="", font=("Arial", 10))
+time_label = tk.Label(french_date_frame, text="", font=("Arial", 15))
 time_label.grid(row=1, column=0)
 
 # Call update_system_info function to fetch and display system information initially
