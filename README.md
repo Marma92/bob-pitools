@@ -1,3 +1,4 @@
+
 # WIP: bob-pitools
 
 This is a simple Python application built using Tkinter that displays the weather forecast for a given city. It fetches weather data from the OpenWeatherMap API and presents it in a user-friendly interface.
@@ -6,7 +7,6 @@ It will also display many other informations in the future.
 
 ## Features
 
-- Allows users to input the city name.
 - Fetches current weather data (description and temperature) from the OpenWeatherMap API.
 - Displays the weather forecast in a visually appealing interface.
 - Supports full-screen mode for better user experience.
@@ -37,6 +37,10 @@ Run the .py file:
  ```
 
 Enter the city name and click the "Update Weather" button to fetch the weather forecast.
+
+## Acknowledgement
+
+Weather icons by [Smashicons](https://www.flaticon.com/fr/auteurs/smashicons) can be seen here : [on flaticon](https://www.flaticon.com/fr/packs/weather-849)
 
 ## Dependencies
 
