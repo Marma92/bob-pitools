@@ -3,6 +3,21 @@ from gpiozero import CPUTemperature
 import psutil
 import requests
 import datetime
+from PIL import Image, ImageTk
+
+# Dictionary mapping weather conditions to icon filenames
+#    Clear, Clouds, Drizzle, Rain, Thunderstorm, Snow, Mist, Smoke, Haze, Dust, Fog, Sand, Ash, Squall, Tornado
+
+weather_icons = {
+    "Clear": "sun.png",
+    "Clouds": "cloud.png",
+    "Drizzle": "drizzle.png",
+    "Rain": "rain.png",
+    "Thunderstorm": "thunder.png",
+    "Snow": "snow.png",
+    "Tornado": "tornado.png"
+}
+current_time = datetime.datetime.now().strftime('%H:%M')
 
 # Function to get the current date in French format
 def get_french_date():
@@ -21,18 +36,23 @@ def get_french_date():
     french_date = f"{french_day} {current_date.day} {french_month} {current_date.year}"
     return french_date
 
-# Function to get the current time in French format
-def get_time():
-    # Get current time
-    current_time = datetime.datetime.now().strftime('%H:%M')
-    return current_time
+
+def toggle_colon():
+    global current_time
+    if ":" in current_time:
+        current_time = datetime.datetime.now().strftime('%H %M')
+    else:
+        current_time = datetime.datetime.now().strftime('%H:%M')
+    time_label.config(text=current_time, font=('Helvetica', 13), fg="#444")
 
 # Function to update the French date and time display
 def update_french_date_and_time():
-    time_label.config(text=get_time())
-    french_date_label.config(text=get_french_date())
+    toggle_colon()
+    #time_label.config(text="", font=('Helvetica', 13), fg="#444")
+    french_date_label.config(text=get_french_date(), font=('Helvetica', 18), fg="#333")
     # Schedule the update_french_datetime function to run again every second
     root.after(1000, update_french_date_and_time)
+
 
 ###########################################
 # WEATHER
@@ -54,9 +74,25 @@ def update_weather():
     if "cod" in weather_data and weather_data["cod"] != "404":
         weather_info = weather_data["weather"][0]["description"].capitalize()
         temperature_info = f"{weather_data['main']['temp']}°C"
-        city_label.config(text=f"{city}")
-        weather_label.config(text=f"{weather_info}")
-        temperature_label.config(text=f"{temperature_info}")
+        city_label.config(text=f"{city}", font=('Helvetica', 20, 'bold'), fg="#333")
+        weather_label.config(text=f"{weather_info}", font=('Helvetica', 14), fg="#666")
+        temperature_label.config(text=f"{temperature_info}", font=('Helvetica', 18), fg="#444")
+        # Get weather condition
+        weather_condition = weather_data["weather"][0]["main"]
+        # Load and display corresponding icon
+        if weather_condition in weather_icons:
+            icon_filename = weather_icons[weather_condition]
+            icon_image = Image.open(icon_filename)
+            # Resize the image to desired dimensions
+            icon_image = icon_image.resize((32, 32), Image.ANTIALIAS)  # Adjust size as needed
+            # Ensure transparency is preserved
+            icon_image = icon_image.convert("RGBA")
+            icon_photo = ImageTk.PhotoImage(icon_image)
+            weather_icon_label.config(image=icon_photo)
+            weather_icon_label.image = icon_photo  # Keep reference to prevent garbage collection
+        else:
+            print(f"Icon for weather condition '{weather_condition}' not found.")
+            weather_icon_label.config(image=None)
     else:
         if "message" in weather_data:
             error_message = weather_data["message"]
@@ -83,10 +119,10 @@ def get_system_info():
 # Function to update the system information display
 def update_system_info():
     cpu_load, cpu_temp, ram_load, disk_usage = get_system_info()
-    disk_usage_label.config(text=f"Disk Usage: {disk_usage}%")
-    cpu_load_label.config(text=f"CPU : {cpu_load}%")
-    cpu_temp_label.config(text=f"Temp: {cpu_temp}°C")
-    ram_load_label.config(text=f"RAM : {ram_load}%")
+    disk_usage_label.config(text=f"💿 Disk : {disk_usage}%", font=('Helvetica', 12), fg="#444")
+    cpu_load_label.config(text=f"💻 CPU : {cpu_load}%", font=('Helvetica', 12), fg="#444")
+    cpu_temp_label.config(text=f"🌡 Temp: {cpu_temp}°C", font=('Helvetica', 12), fg="#444")
+    ram_load_label.config(text=f"🖲 RAM : {ram_load}%", font=('Helvetica', 12), fg="#444")
 
     # Schedule the update_system_info function to run again after 1 second
     root.after( 1000, update_system_info)
@@ -146,14 +182,18 @@ weather_frame = tk.Frame(root)
 weather_frame.grid(row=0, column=0, padx=5, pady=5)
 
 # Create and place widgets in the weather frame
-city_label = tk.Label(weather_frame, text="", font=("Arial", 20))  # Set font size to 20
+city_label = tk.Label(weather_frame, text="")  # Set font size to 20
 city_label.grid(row=0, column=0)
 
-weather_label = tk.Label(weather_frame, text="")
-weather_label.grid(row=1, column=0)
+# Add a label for weather icon
+weather_icon_label = tk.Label(weather_frame)
+weather_icon_label.grid(row=1, column=0)
 
-temperature_label = tk.Label(weather_frame, text="", font=("Arial", 25))
-temperature_label.grid(row=2, column=0)
+weather_label = tk.Label(weather_frame, text="")
+weather_label.grid(row=2, column=0)
+
+temperature_label = tk.Label(weather_frame, text="")
+temperature_label.grid(row=3, column=0)
 
 # Create and configure system info frame
 system_info_frame = tk.Frame(root)
