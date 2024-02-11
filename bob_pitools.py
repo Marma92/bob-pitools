@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from gpiozero import CPUTemperature
 import psutil
 import requests
@@ -76,16 +75,19 @@ def update_weather():
 # Function to fetch system information
 def get_system_info():
     cpu_load = psutil.cpu_percent(interval=1)
-    ram_load = psutil.virtual_memory().percent
     cpu_temp = round(CPUTemperature().temperature, 1)
-    return cpu_load, ram_load, cpu_temp
+    ram_load = psutil.virtual_memory().percent
+    disk_usage = psutil.disk_usage('/').percent
+    return cpu_load, cpu_temp, ram_load, disk_usage
 
 # Function to update the system information display
 def update_system_info():
-    cpu_load, ram_load, cpu_temp = get_system_info()
+    cpu_load, cpu_temp, ram_load, disk_usage = get_system_info()
+    disk_usage_label.config(text=f"Disk Usage: {disk_usage}%")
     cpu_load_label.config(text=f"CPU : {cpu_load}%")
-    ram_load_label.config(text=f"RAM : {ram_load}%")
     cpu_temp_label.config(text=f"Temp: {cpu_temp}°C")
+    ram_load_label.config(text=f"RAM : {ram_load}%")
+
     # Schedule the update_system_info function to run again after 1 second
     root.after( 1000, update_system_info)
 
@@ -145,7 +147,7 @@ weather_frame.grid(row=0, column=0, padx=5, pady=5)
 
 # Create and place widgets in the weather frame
 city_label = tk.Label(weather_frame, text="", font=("Arial", 20))  # Set font size to 20
-city_label.grid(row=0, column=0) 
+city_label.grid(row=0, column=0)
 
 weather_label = tk.Label(weather_frame, text="")
 weather_label.grid(row=1, column=0)
@@ -161,13 +163,15 @@ system_info_frame.grid(row=0, column=2, padx=5, pady=5)
 cpu_load_label = tk.Label(system_info_frame, text="")
 cpu_load_label.grid(sticky="W", row=0, column=0)
 
+cpu_temp_label = tk.Label(system_info_frame, text="")
+cpu_temp_label.grid(sticky="W", row=1, column=0)
 
 ram_load_label = tk.Label(system_info_frame, text="")
-ram_load_label.grid(sticky="W", row=1, column=0)
+ram_load_label.grid(sticky="W", row=2, column=0)
 
+disk_usage_label = tk.Label(system_info_frame, text="")
+disk_usage_label.grid(sticky="W", row=3, column=0)
 
-cpu_temp_label = tk.Label(system_info_frame, text="")
-cpu_temp_label.grid(sticky="W", row=2, column=0)
 
 # Create and place French date frame in the center of the window
 french_date_frame = tk.Frame(root)
